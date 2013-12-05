@@ -13,7 +13,8 @@
 @property NSArray *mySortedArray;
 @property int numElements;
 - (void)sortRandomArray;
-- (NSArray *)binarySortSubArray:(NSArray *)subArray;
+//- (NSArray *)binarySortSubArray:(NSArray *)subArray;
++ (NSArray *)binarySortSubArray:(NSArray *)subArray;
 @end
 
 @implementation RandomArray
@@ -44,13 +45,14 @@
         rightSideArray = [rightSideArray subarrayWithRange:range];
         
         subArray = [tempArray subarrayWithRange:NSMakeRange(0, length)];
-        tempArray = [self binarySortSubArray:subArray];
+        //tempArray = [self binarySortSubArray:subArray];
+        tempArray = [RandomArray binarySortSubArray:subArray];
         tempArray = [tempArray arrayByAddingObjectsFromArray:rightSideArray];
     }
     self.mySortedArray = [[NSArray alloc]initWithArray:tempArray];
      
 }
-- (NSArray *)binarySortSubArray:(NSArray *)subArray
++ (NSArray *)binarySortSubArray:(NSArray *)subArray;
 {
     int lengthSubArray = (int)[subArray count];
     NSNumber *leftNumber = [subArray objectAtIndex:0];
