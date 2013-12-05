@@ -13,7 +13,8 @@
 @property NSArray *mySortedArray;
 @property int numElements;
 - (void)sortRandomArray;
-- (NSArray *)binarySortSubArray:(NSArray *)subArray;
++ (NSArray *)binarySortSubArray:(NSArray *)subArray;
+- (void)print;
 @end
 
 @implementation RandomArray
@@ -21,8 +22,9 @@
 {
     self = [super init];
     if (self) {
-        _numElements = 5;
+        _numElements = 100;
         _myArray = [[NSMutableArray alloc]init];
+        _mySortedArray = [[NSArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
             NSUInteger r = arc4random_uniform(_numElements) + 1;
             NSNumber *wrappedInt = [NSNumber numberWithInteger:r];
@@ -30,6 +32,11 @@
         }
     }
     return self;
+}
+- (void)print
+{
+    NSLog(@"Unsorted array = %@",[_myArray componentsJoinedByString:@", "]);
+    NSLog(@"Sorted array = %@",[_mySortedArray componentsJoinedByString:@", "]);
 }
 - (void)sortRandomArray
 {
@@ -44,13 +51,12 @@
         rightSideArray = [rightSideArray subarrayWithRange:range];
         
         subArray = [tempArray subarrayWithRange:NSMakeRange(0, length)];
-        tempArray = [self binarySortSubArray:subArray];
-        tempArray = [tempArray arrayByAddingObjectsFromArray:rightSideArray];
+        tempArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
     }
-    self.mySortedArray = [[NSArray alloc]initWithArray:tempArray];
+    self.mySortedArray = tempArray;
      
 }
-- (NSArray *)binarySortSubArray:(NSArray *)subArray
++ (NSArray *)binarySortSubArray:(NSArray *)subArray;
 {
     int lengthSubArray = (int)[subArray count];
     NSNumber *leftNumber = [subArray objectAtIndex:0];
@@ -87,35 +93,23 @@
     NSArray *tempArray = [[NSArray alloc]init];
     if (intToSort < midValue) {
         tempArray = [leftArray arrayByAddingObjectsFromArray:@[numberToSort]];
-        tempArray = [self binarySortSubArray:tempArray];
-        tempArray = [tempArray arrayByAddingObjectsFromArray:rightArray];
-        return tempArray;
+        return [[RandomArray binarySortSubArray:tempArray] arrayByAddingObjectsFromArray:rightArray];
     } else if (intToSort > midValue) {
         tempArray = [rightArray arrayByAddingObjectsFromArray:@[numberToSort]];
-        tempArray = [self binarySortSubArray:tempArray];
-        tempArray = [leftArray arrayByAddingObjectsFromArray:tempArray];
-        return tempArray;
+        return [leftArray arrayByAddingObjectsFromArray:[RandomArray binarySortSubArray:tempArray]];
     } else {
-        tempArray = [leftArray arrayByAddingObjectsFromArray:@[numberToSort]];
-        tempArray = [tempArray arrayByAddingObjectsFromArray:rightArray];
-        return tempArray;
+        return [[leftArray arrayByAddingObjectsFromArray:@[numberToSort]] arrayByAddingObjectsFromArray:rightArray];
     }
 }
 @end
-
-
 
 int main(int argc, const char * argv[])
 {
 
     @autoreleasepool {
-        
         RandomArray *myRandomArray = [[RandomArray alloc]init];
         [myRandomArray sortRandomArray];
-        
-        NSLog(@"Unsorted array = %@",myRandomArray.myArray);
-        NSLog(@"Sorted array = %@",myRandomArray.mySortedArray);
-        
+        [myRandomArray print];
     }
     return 0;
 }
