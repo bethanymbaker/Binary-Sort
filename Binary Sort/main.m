@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface RandomArray : NSObject
-@property NSMutableArray *myArray;
+@property NSMutableArray *myUnsortedArray;
 @property NSArray *mySortedArray;
 @property int numElements;
 - (void)sortRandomArray;
@@ -23,27 +23,27 @@
     self = [super init];
     if (self) {
         _numElements = 1000;
-        _myArray = [[NSMutableArray alloc]init];
+        _myUnsortedArray = [[NSMutableArray alloc]init];
         _mySortedArray = [[NSArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
-            [_myArray addObject:[NSNumber numberWithInteger:arc4random_uniform(_numElements) + 1]];
+            [_myUnsortedArray addObject:[NSNumber numberWithInteger:arc4random_uniform(_numElements) + 1]];
         }
     }
     return self;
 }
 - (void)print
 {
-    NSLog(@"Unsorted array = %@",[_myArray componentsJoinedByString:@", "]);
+    NSLog(@"Unsorted array = %@",[_myUnsortedArray componentsJoinedByString:@", "]);
     NSLog(@"Sorted array = %@",[_mySortedArray componentsJoinedByString:@", "]);
 }
 - (void)sortRandomArray
 {
     NSArray *subArray = [[NSArray alloc]init];
-    NSArray *myArray = [[NSArray alloc]initWithArray:self.myArray];
+    NSArray *myArray = [[NSArray alloc]initWithArray:_myUnsortedArray];
     NSArray *rightSideArray;
     
     for (int length = 1; length<_numElements+1; length ++) {
-        rightSideArray = [self.myArray subarrayWithRange:NSMakeRange(length, _numElements-length)];
+        rightSideArray = [_myUnsortedArray subarrayWithRange:NSMakeRange(length, _numElements-length)];
         subArray = [myArray subarrayWithRange:NSMakeRange(0, length)];
         myArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
     }
