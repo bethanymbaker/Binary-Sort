@@ -89,12 +89,12 @@
     NSArray *tempArray = [[NSArray alloc]init];
     if (intToSort < midValue) {
         tempArray = [leftArray arrayByAddingObjectsFromArray:@[numberToSort]];
-        tempArray = [self binarySortSubArray:tempArray];
+        tempArray = [RandomArray binarySortSubArray:tempArray];
         tempArray = [tempArray arrayByAddingObjectsFromArray:rightArray];
         return tempArray;
     } else if (intToSort > midValue) {
         tempArray = [rightArray arrayByAddingObjectsFromArray:@[numberToSort]];
-        tempArray = [self binarySortSubArray:tempArray];
+        tempArray = [RandomArray binarySortSubArray:tempArray];
         tempArray = [leftArray arrayByAddingObjectsFromArray:tempArray];
         return tempArray;
     } else {
