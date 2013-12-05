@@ -42,9 +42,9 @@
     NSArray *myArray = [[NSArray alloc]initWithArray:_myUnsortedArray];
     NSArray *rightSideArray;
     
-    for (int length = 1; length<_numElements+1; length ++) {
-        rightSideArray = [_myUnsortedArray subarrayWithRange:NSMakeRange(length, _numElements-length)];
-        subArray = [myArray subarrayWithRange:NSMakeRange(0, length)];
+    for (int numLeftElements = 1; numLeftElements<_numElements+1; numLeftElements ++) {
+        rightSideArray = [_myUnsortedArray subarrayWithRange:NSMakeRange(numLeftElements, _numElements-numLeftElements)];
+        subArray = [myArray subarrayWithRange:NSMakeRange(0, numLeftElements)];
         myArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
     }
     self.mySortedArray = myArray;
