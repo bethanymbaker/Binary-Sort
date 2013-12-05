@@ -21,7 +21,7 @@
 {
     self = [super init];
     if (self) {
-        _numElements = 100;
+        _numElements = 5;
         _myArray = [[NSMutableArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
             NSUInteger r = arc4random_uniform(100) + 1;
@@ -68,14 +68,13 @@
     }
     
     // Length >= 3...we have a sorted array on the left with a number to sort on the right
-    int lengthSortedArray = lengthSubArray - 1;
+    int lengthPreSortedArray = lengthSubArray - 1;
     
-    NSNumber *numberToSort = [subArray objectAtIndex:lengthSortedArray];
+    NSNumber *numberToSort = [subArray objectAtIndex:lengthPreSortedArray];
     int intToSort = [numberToSort intValue];
     
-    NSArray *preSortedArray = [subArray subarrayWithRange:NSMakeRange(0, lengthSortedArray)];
-    int lengthPreSortedArray = (int)[preSortedArray count];
-    int midPoint = lengthSortedArray / 2;
+    NSArray *preSortedArray = [subArray subarrayWithRange:NSMakeRange(0, lengthPreSortedArray)];
+    int midPoint = lengthPreSortedArray / 2;
     NSNumber *midNumber = [preSortedArray objectAtIndex:midPoint];
     int midValue = [midNumber intValue];
     
