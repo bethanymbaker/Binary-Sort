@@ -22,13 +22,11 @@
 {
     self = [super init];
     if (self) {
-        _numElements = 100;
+        _numElements = 1000;
         _myArray = [[NSMutableArray alloc]init];
         _mySortedArray = [[NSArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
-            NSUInteger r = arc4random_uniform(_numElements) + 1;
-            NSNumber *wrappedInt = [NSNumber numberWithInteger:r];
-            [_myArray addObject:wrappedInt];
+            [_myArray addObject:[NSNumber numberWithInteger:arc4random_uniform(_numElements) + 1]];
         }
     }
     return self;
@@ -41,54 +39,43 @@
 - (void)sortRandomArray
 {
     NSArray *subArray = [[NSArray alloc]init];
-    NSArray *tempArray = [[NSArray alloc]initWithArray:self.myArray];
+    NSArray *myArray = [[NSArray alloc]initWithArray:self.myArray];
     NSArray *rightSideArray;
-    NSRange range;
     
     for (int length = 1; length<_numElements+1; length ++) {
-        rightSideArray = [[NSArray alloc]initWithArray:self.myArray];
-        range = NSMakeRange(length, _numElements-length);
-        rightSideArray = [rightSideArray subarrayWithRange:range];
-        
-        subArray = [tempArray subarrayWithRange:NSMakeRange(0, length)];
-        tempArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
+        rightSideArray = [self.myArray subarrayWithRange:NSMakeRange(length, _numElements-length)];
+        subArray = [myArray subarrayWithRange:NSMakeRange(0, length)];
+        myArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
     }
-    self.mySortedArray = tempArray;
+    self.mySortedArray = myArray;
      
 }
 + (NSArray *)binarySortSubArray:(NSArray *)subArray;
 {
     int lengthSubArray = (int)[subArray count];
+    int lengthPreSortedArray = lengthSubArray - 1;
     NSNumber *leftNumber = [subArray objectAtIndex:0];
-    NSNumber *rightNumber = [subArray objectAtIndex:lengthSubArray-1];
+    NSNumber *numberToSort = [subArray objectAtIndex:lengthPreSortedArray];
     int leftValue = [leftNumber intValue];
-    int rightValue = [rightNumber intValue];
+    int intToSort = [numberToSort intValue];
     
     if (lengthSubArray == 1) {
         return subArray;
     } else if (lengthSubArray == 2) {
-        if (rightValue < leftValue) {
-            return @[rightNumber,leftNumber];
+        if (intToSort < leftValue) {
+            return @[numberToSort,leftNumber];
         }
         return subArray;
     }
     
     // Length >= 3...we have a sorted array on the left with a number to sort on the right
-    int lengthPreSortedArray = lengthSubArray - 1;
-    
-    NSNumber *numberToSort = [subArray objectAtIndex:lengthPreSortedArray];
-    int intToSort = [numberToSort intValue];
-    
     NSArray *preSortedArray = [subArray subarrayWithRange:NSMakeRange(0, lengthPreSortedArray)];
     int midPoint = lengthPreSortedArray / 2;
     NSNumber *midNumber = [preSortedArray objectAtIndex:midPoint];
     int midValue = [midNumber intValue];
     
-    NSRange rangeLeft = NSMakeRange(0, midPoint);
-    NSRange rangeRight = NSMakeRange(midPoint, lengthPreSortedArray-midPoint);
-    
-    NSArray *leftArray = [preSortedArray subarrayWithRange:rangeLeft];
-    NSArray *rightArray = [preSortedArray subarrayWithRange:rangeRight];
+    NSArray *leftArray = [preSortedArray subarrayWithRange:NSMakeRange(0, midPoint)];
+    NSArray *rightArray = [preSortedArray subarrayWithRange:NSMakeRange(midPoint, lengthPreSortedArray-midPoint)];
     
     NSArray *tempArray = [[NSArray alloc]init];
     if (intToSort < midValue) {
