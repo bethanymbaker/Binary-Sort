@@ -24,7 +24,7 @@
         _numElements = 5;
         _myArray = [[NSMutableArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
-            NSUInteger r = arc4random_uniform(100) + 1;
+            NSUInteger r = arc4random_uniform(_numElements) + 1;
             NSNumber *wrappedInt = [NSNumber numberWithInteger:r];
             [_myArray addObject:wrappedInt];
         }
