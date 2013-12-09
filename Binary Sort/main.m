@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        _numElements = 1000;
+        _numElements = 100;
         _myUnsortedArray = [[NSMutableArray alloc]init];
         _mySortedArray = [[NSArray alloc]init];
         for (int i = 0; i<_numElements; i++) {
@@ -38,16 +38,16 @@
 }
 - (void)sortRandomArray
 {
-    NSArray *subArray = [[NSArray alloc]init];
-    NSArray *myArray = [[NSArray alloc]initWithArray:_myUnsortedArray];
+    NSArray *leftSideArray = [[NSArray alloc]init];
     NSArray *rightSideArray;
+    NSArray *reassembledArray = [[NSArray alloc]initWithArray:_myUnsortedArray];
     
     for (int numLeftElements = 1; numLeftElements<_numElements+1; numLeftElements ++) {
         rightSideArray = [_myUnsortedArray subarrayWithRange:NSMakeRange(numLeftElements, _numElements-numLeftElements)];
-        subArray = [myArray subarrayWithRange:NSMakeRange(0, numLeftElements)];
-        myArray = [[RandomArray binarySortSubArray:subArray] arrayByAddingObjectsFromArray:rightSideArray];
+        leftSideArray = [reassembledArray subarrayWithRange:NSMakeRange(0, numLeftElements)];
+        reassembledArray = [[RandomArray binarySortSubArray:leftSideArray] arrayByAddingObjectsFromArray:rightSideArray];
     }
-    self.mySortedArray = myArray;
+    self.mySortedArray = reassembledArray;
      
 }
 + (NSArray *)binarySortSubArray:(NSArray *)subArray;
